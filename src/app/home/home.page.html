@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title text-center>
+      A simple drawing app
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding no-bounce>
+  <div #fixedContainer ion-fixed>
+    <ion-row>
+      <ion-col *ngFor="let color of colors" [style.background]="color" class="color-block" tappable
+        (click)="selectColor(color)"></ion-col>
+    </ion-row>
+    <ion-radio-group [(ngModel)]="selectedColor">
+      <ion-row>
+        <ion-col *ngFor="let color of colors" class="ion-text-center">
+          <ion-radio [value]="color"></ion-radio>
+        </ion-col>
+      </ion-row>
+    </ion-radio-group>
+    <canvas #imageCanvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
+
+    <ion-button (click)="clear()">Clear</ion-button>
+ 
+    <ion-button full (click)="saveCanvasImage()">Save Image</ion-button>
+  </div>
+ 
+  <ion-list *ngIf="storedImages.length > 0">
+    <ion-list-header>Previous Drawings</ion-list-header>
+    <ion-card *ngFor="let obj of storedImages; let i = index">
+      <ion-card-content>
+        <img [src]="getImagePath(obj.img)">
+      </ion-card-content>
+      <ion-row>
+        <button ion-button full icon-only color="danger" (click)="removeImageAtIndex(i)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-row>
+    </ion-card>
+  </ion-list>
+  
+</ion-content>
